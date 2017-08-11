@@ -9,15 +9,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
 
-public class Application {
-    public static final String USERNAME = "trialtry1";
+public class Application {public static final String USERNAME = "trialtry1";
     public static final String AUTOMATE_KEY = "sv3NgNPXBZuKbqmyWF4Z";
     public static final String URL = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
     protected static final String FIT_PREDICTOR_LOGO = "span.fp-logo-text.ng-scope";
     protected static final String NEXT = "div.fp-btn-nav.fp-btn-next.fp-filled";
-    protected static final String DONE = "div.fp-btn-nav fp-btn-done fp-filled";
+    protected static final String DONE = "div.fp-btn-nav.fp-btn-done.fp-filled";
     protected static final String EDIT = "div.fp-btn-nav.fp-btn-edit.fp-animation-disabled.fp-text-only";
-    protected static final String REMOVE = "div.fp-btn-rem-seed";
+    protected static final String REMOVE = "span.fp-btn-rem-seed";
+    protected static final String SAVE = "div.fp-btn-nav.fp-btn-save.fp-animation-disabled.fp-filled";
+    protected static final String ELEMENTTEXT = "span.fp-size-rec.fp-calc-your-size.ng-binding";
     public static void main(String[] args) throws Exception {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("browserName", "iPhone");
@@ -45,8 +46,12 @@ public class Application {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(DONE)));
         driver.findElement(By.cssSelector(DONE)).click();
         driver.findElement(By.cssSelector(FIT_PREDICTOR_LOGO)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(EDIT)));
         driver.findElement(By.cssSelector(EDIT)).click();
         driver.findElement(By.cssSelector(REMOVE)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(SAVE)));
+        driver.findElement(By.cssSelector(SAVE)).click();
+        Assert.assertEquals("Text should be: Calculate Your Size", "Calculate your size", driver.findElement(By.cssSelector(ELEMENTTEXT)).getAttribute("innerText"));
         driver.quit();
     }
 }
